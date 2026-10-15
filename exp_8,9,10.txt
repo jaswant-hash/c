@@ -1,0 +1,278 @@
+-------------SPARK---------------------------------------
+sudo apt update
+sudo apt install openjdk-17-jre python3-pip -y
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+pip3 install --user --timeout 300 --retries 10 pyspark
+nano wordcount.py
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("WordCount").getOrCreate()
+
+sc = spark.sparkContext
+
+text_data = sc.textFile("input.txt")
+
+word_counts = text_data.flatMap(lambda line: line.split()) \
+    .map(lambda word: (word, 1)) \
+    .reduceByKey(lambda a, b: a + b)
+
+for word, count in word_counts.collect():
+    print(f"{word}: {count}")
+
+spark.stop()
+
+python3 wordcount.py
+
+
+
+----------------------  HADHOOP ----------------------------------------------------------
+
+
+
+
+echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> ~/.bashrc
+echo 'export HADOOP_HOME=/usr/local/hadoop' >> ~/.bashrc
+echo 'export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin' >> ~/.bashrc
+source ~/.bashrc
+
+
+echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+
+cat > $HADOOP_HOME/etc/hadoop/core-site.xml <<'EOF'
+<?xml version="1.0"?>
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+EOF
+
+
+mkdir -p ~/hadoopdata/namenode ~/hadoopdata/datanode
+cat > $HADOOP_HOME/etc/hadoop/hdfs-site.xml <<EOF
+<?xml version="1.0"?>
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file://$HOME/hadoopdata/namenode</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file://$HOME/hadoopdata/datanode</value>
+    </property>
+</configuration>
+EOF
+
+
+cat > $HADOOP_HOME/etc/hadoop/mapred-site.xml <<'EOF'
+<?xml version="1.0"?>
+<configuration>
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+</configuration>
+EOF
+
+
+cat > $HADOOP_HOME/etc/hadoop/yarn-site.xml <<'EOF'
+<?xml version="1.0"?>
+<configuration>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+</configuration>
+EOF
+
+
+sudo systemctl enable --now ssh
+mkdir -p ~/.ssh
+[ -f ~/.ssh/id_rsa ] || ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+
+
+hdfs namenode -format
+
+
+start-dfs.sh
+start-yarn.sh
+jps
+
+
+mkdir -p ~/wordcount
+cd ~/wordcount
+echo "hello hadoop hello mapreduce hadoop" > input.txt
+
+
+hdfs dfs -mkdir -p /user/$USER/input
+hdfs dfs -put -f input.txt /user/$USER/input/
+
+
+hdfs dfs -rm -r -f /user/$USER/output
+
+
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.6.jar wordcount /user/$USER/input /user/$USER/output
+
+
+hdfs dfs -cat /user/$USER/output/part-r-00000
+
+
+stop-yarn.sh
+stop-dfs.sh
+
+
+-------------- MPI ------------------------------------------------
+
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv build-essential
+sudo apt install -y openmpi-bin libopenmpi-dev
+sudo apt install -y python3-mpi4py
+
+python3 --version
+gcc --version
+mpirun --version
+mpicc --version
+
+mkdir -p ~/mpi_openmp_lab
+cd ~/mpi_openmp_lab
+
+
+1.MPI sum
+
+nano mpi_sum.py
+
+from mpi4py import MPI
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+my_val = (rank + 1) * 10
+total_sum = comm.reduce(my_val, op=MPI.SUM, root=0)
+if rank == 0:
+    print(f"Total Sum: {total_sum}")
+
+mpirun --oversubscribe -np 2 python3 mpi_sum.py
+
+
+2.MPI maximum
+
+nano mpi_max.py
+
+from mpi4py import MPI
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+my_val = (rank + 1) * 5
+max_val = comm.reduce(my_val, op=MPI.MAX, root=0)
+if rank == 0:
+    print(f"Maximum Value: {max_val}")
+
+mpirun --oversubscribe -np 2 python3 mpi_max.py
+
+
+3.MPI factorial
+
+nano mpi_factorial.py
+
+
+from mpi4py import MPI
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+size = comm.Get_size()
+my_val = rank + 1
+factorial = comm.reduce(my_val, op=MPI.PROD, root=0)
+if rank == 0:
+    print(f"Factorial of {size}: {factorial}")
+
+
+
+mpirun --oversubscribe -np 5 python3 mpi_factorial.py
+
+4.Parallel sum
+
+nano omp_sum.c
+
+
+#include <stdio.h>
+#include <omp.h>
+
+int main() {
+    int sum = 0;
+    int n = 10;
+
+    #pragma omp parallel for reduction(+:sum)
+    for (int i = 1; i <= n; i++) {
+        sum += i;
+    }
+
+    printf("Total Sum: %d\n", sum);
+    return 0;
+}
+
+gcc -fopenmp omp_sum.c -o omp_sum
+./omp_sum
+
+
+5.Parallel factorial
+
+nano omp_factorial.c
+
+#include <stdio.h>
+#include <omp.h>
+int main() {
+    int n = 5;
+    long long fact = 1;
+
+    #pragma omp parallel for reduction(*:fact)
+    for (int i = 1; i <= n; i++) {
+        fact *= i;
+    }
+
+    printf("Factorial of %d: %lld\n", n, fact);
+    return 0;
+}
+
+
+gcc -fopenmp omp_factorial.c -o omp_factorial
+./omp_factorial
+
+
+6.Parallel array addition
+
+nano omp_array.c
+
+
+#include <stdio.h>
+#include <omp.h>
+
+int main() {
+    int n = 5;
+    int a[] = {1, 2, 3, 4, 5};
+    int b[] = {10, 20, 30, 40, 50};
+    int result[5];
+
+    #pragma omp parallel for
+    for (int i = 0; i < n; i++) {
+        result[i] = a[i] + b[i];
+    }
+
+    printf("Result Array:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d + %d = %d\n", a[i], b[i], result[i]);
+    }
+
+    return 0;
+}
+
+
+gcc -fopenmp omp_array.c -o omp_array
+OMP_NUM_THREADS=4 ./omp_array
+

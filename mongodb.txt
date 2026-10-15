@@ -1,0 +1,97 @@
+# Step 1: Install packages
+!pip install pymongo certifi
+
+import certifi
+from pymongo import MongoClient
+
+# Step 2: Connect to MongoDB Cluster
+uri = "mongodb+srv://guest:LN4pH8R0GFIOpuAL@cluster0.b10bono.mongodb.net/?appName=Cluster0"
+client = MongoClient(uri, tlsCAFile=certifi.where())
+
+# Ping to verify connection
+client.admin.command("ping")
+print("Connected successfully!")
+
+# Step 3: Select Database and Collection
+db = client["todo"]
+tasks = db["task"]
+print("Database: todo")
+print("Collection: task")
+
+# Step 4: Insert One Task
+task1 = {
+    "title": "Study Python",
+    "description": "Learn MongoDB CRUD",
+    "completed": False
+}
+result = tasks.insert_one(task1)
+print("Task inserted successfully!")
+print("Task ID:", result.inserted_id)
+
+# Step 5: Insert Many Tasks
+task_list = [
+    {
+        "title": "Complete assignment",
+        "description": "Finish lab record",
+        "completed": False
+    },
+    {
+        "title": "Learn MongoDB",
+        "description": "Practice queries",
+        "completed": True
+    },
+    {
+        "title": "Exercise",
+        "description": "Go to the gym",
+        "completed": False
+    }
+]
+result = tasks.insert_many(task_list)
+print("Number of tasks inserted:", len(result.inserted_ids))
+
+# Step 6: Display All Tasks
+print("\n--- All Tasks ---")
+for task in tasks.find():
+    print(task)
+
+# Step 7: Display Pending Tasks
+print("\n--- Pending Tasks ---")
+for task in tasks.find({"completed": False}):
+    print(task)
+
+# Step 8: Find One Particular Task
+print("\n--- Find Task 'Study Python' ---")
+task = tasks.find_one({"title": "Study Python"})
+print(task)
+
+# Step 9: Update Task Status
+result = tasks.update_one(
+    {"title": "Study Python"},
+    {"$set": {"completed": True}}
+)
+print("Matched:", result.matched_count)
+print("Modified:", result.modified_count)
+
+# Step 10: Display Updated Task
+print("\n--- Updated Task ---")
+print(tasks.find_one({"title": "Study Python"}))
+
+# Step 11: Delete One Task
+result = tasks.delete_one({"title": "Exercise"})
+print("\nTasks deleted:", result.deleted_count)
+
+# Step 12: Verify Task Deletion
+print(tasks.find_one({"title": "Exercise"}))
+
+# Step 13: Display Final Tasks
+print("\n--- Final Tasks in MongoDB ---")
+for task in tasks.find():
+    print(task)
+
+
+//// jupyter command
+
+python --version
+pip --version
+python -m pip install notebook pymongo
+python -m notebook

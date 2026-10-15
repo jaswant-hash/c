@@ -1,0 +1,16 @@
+open dropbox console
+  shoose setting and create app 
+    choose dropbox api 
+    chooose app folder 
+  create 
+
+permission 
+ allow file read and write content
+
+setting 
+ generate key
+ paste in the py file 
+
+
+open dropbox
+  go to Apps and see the result :)

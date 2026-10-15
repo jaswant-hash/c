@@ -1,0 +1,51 @@
+in bash
+
+# 1. Check Node.js and npm
+node -v
+npm -v
+
+# 2. Create Vite + React project
+npm create vite@latest firebase-react-crud -- --template react
+
+# 3. Enter the project folder
+cd firebase-react-crud
+
+# 4. Install project dependencies
+npm install
+
+# 5. Install Firebase and React Router
+npm install firebase react-router-dom
+
+# 6. Run the React application
+npm run dev
+
+# Stop the development server with Ctrl + C before continuing
+
+# 7. Build the React application
+npm run build
+
+# 8. Install Firebase CLI
+npm install -g firebase-tools
+
+# 9. Sign in to Firebase
+firebase login
+
+
+# 10. Initialize Firebase Hosting
+firebase init hosting
+
+# During setup, select:
+# Use an existing project: Yes
+# Select your Firebase project
+# Public directory: dist
+# Configure as a single-page app: Yes
+# Automatic GitHub builds: No
+# Overwrite index.html: No
+
+# 11. Build the application again
+npm run build
+
+# 12. Deploy to Firebase Hosting
+firebase deploy --only hosting
+
+
