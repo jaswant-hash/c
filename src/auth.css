@@ -1,0 +1,277 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+  background: #f4f7fc;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: #f4f7fc;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page {
+  display: grid;
+  min-height: 100vh;
+  padding: 20px;
+  place-items: center;
+}
+
+.card {
+  width: min(100%, 380px);
+  padding: 28px;
+  border: 1px solid #e1e7f0;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 8px 24px rgb(31 54 92 / 8%);
+}
+
+.task-card {
+  width: min(100%, 600px);
+}
+
+h1 {
+  margin: 0;
+  color: #172033;
+  font-size: 24px;
+}
+
+.signin-card h1,
+.signin-card > .description {
+  text-align: center;
+}
+
+.description {
+  margin: 8px 0 20px;
+  color: #68758b;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  border-radius: 5px;
+  background: #f1f4f9;
+}
+
+.mode-switch button,
+.small-button {
+  padding: 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #536176;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.mode-switch .selected {
+  background: white;
+  color: #245fc5;
+  box-shadow: 0 1px 3px rgb(31 54 92 / 12%);
+}
+
+.account-form,
+.task-form {
+  display: grid;
+  gap: 12px;
+}
+
+.account-form label,
+.task-form label {
+  display: grid;
+  gap: 5px;
+  color: #364152;
+  font-size: 13px;
+}
+
+.account-form input,
+.task-input-row input {
+  width: 100%;
+  height: 39px;
+  padding: 0 9px;
+  border: 1px solid #d6deea;
+  border-radius: 5px;
+  color: #1f2937;
+}
+
+input:focus {
+  border-color: #3977dc;
+  outline: 2px solid #dce9ff;
+}
+
+.button,
+.google-button,
+.small-button {
+  min-height: 38px;
+  border: 1px solid #2864d7;
+  border-radius: 5px;
+  background: #2864d7;
+  color: white;
+  cursor: pointer;
+}
+
+.button {
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.button:hover,
+.google-button:hover {
+  background: #1e52ba;
+}
+
+.button:disabled,
+.google-button:disabled,
+.small-button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.google-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-color: #d6deea;
+  background: white;
+  color: #26344a;
+  font-size: 13px;
+}
+
+.google-button:hover {
+  background: #f6f8fc;
+}
+
+.google-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+  color: #8290a4;
+  font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+  height: 1px;
+  flex: 1;
+  background: #e5eaf1;
+  content: '';
+}
+
+.error {
+  margin: 14px 0 0;
+  padding: 9px 10px;
+  border: 1px solid #f2cdcd;
+  border-radius: 5px;
+  background: #fff6f6;
+  color: #a42e2e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.card-heading .description {
+  margin-bottom: 0;
+}
+
+.small-button {
+  min-height: 32px;
+  padding: 0 10px;
+  border-color: #d6deea;
+  background: white;
+  color: #2864d7;
+  white-space: nowrap;
+}
+
+.small-button:hover {
+  background: #f6f8fc;
+}
+
+.task-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.task-input-row .button {
+  min-width: 70px;
+}
+
+.task-list {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #e1e7f0;
+  border-radius: 5px;
+  color: #364152;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.task-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 5px;
+}
+
+.delete-button {
+  color: #a42e2e;
+}
+
+.empty-message {
+  margin: 20px 0 0;
+  color: #68758b;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 420px) {
+  .card {
+    padding: 22px 18px;
+  }
+}

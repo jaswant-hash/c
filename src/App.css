@@ -1,0 +1,302 @@
+/* ─── Reset & Base ─────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ─── Page wrapper ─────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* ─── Card ─────────────────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border: 2px solid #d0d7de;
+  border-radius: 12px;
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 4px 4px 0px #b0b8c1;
+}
+
+.card.wide {
+  max-width: 560px;
+}
+
+/* ─── Title ─────────────────────────────────────────────── */
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* ─── Tab row (Sign Up / Log In toggle) ─────────────────── */
+.tab-row {
+  display: flex;
+  border: 2px solid #d0d7de;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #f6f8fa;
+  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #1a1a2e;
+  color: #ffffff;
+}
+
+/* ─── Input ─────────────────────────────────────────────── */
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #d0d7de;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #333;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #1a1a2e;
+  background: #fff;
+}
+
+/* ─── Main button ───────────────────────────────────────── */
+.btn-main {
+  width: 100%;
+  padding: 11px;
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: 2px solid #1a1a2e;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-main:hover {
+  background: #fff;
+  color: #1a1a2e;
+}
+
+/* ─── Divider ───────────────────────────────────────────── */
+.divider {
+  text-align: center;
+  color: #aaa;
+  font-size: 13px;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 42%;
+  height: 1px;
+  background: #d0d7de;
+}
+
+.divider::before { left: 0; }
+.divider::after  { right: 0; }
+
+/* ─── Google button ─────────────────────────────────────── */
+.btn-google {
+  width: 100%;
+  padding: 11px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid #d0d7de;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.btn-google:hover {
+  border-color: #1a1a2e;
+  background: #f0f4f8;
+}
+
+/* ─── Error message ─────────────────────────────────────── */
+.error-msg {
+  color: #c0392b;
+  font-size: 13px;
+  background: #fdecea;
+  border: 1px solid #f5c6c6;
+  border-radius: 6px;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+/* ─── Top bar (task page header) ───────────────────────── */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 2px solid #d0d7de;
+  padding-bottom: 14px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.btn-logout {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #fff;
+  color: #c0392b;
+  border: 2px solid #c0392b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-logout:hover {
+  background: #c0392b;
+  color: #fff;
+}
+
+/* ─── Add task row ──────────────────────────────────────── */
+.add-row {
+  display: flex;
+  gap: 10px;
+}
+
+.add-row .input {
+  flex: 1;
+}
+
+.add-row .btn-main {
+  width: auto;
+  padding: 10px 20px;
+}
+
+/* ─── Empty message ─────────────────────────────────────── */
+.empty-msg {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+/* ─── Task list ─────────────────────────────────────────── */
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #f6f8fa;
+  border: 2px solid #d0d7de;
+  border-radius: 8px;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 15px;
+  color: #222;
+}
+
+.edit-input {
+  flex: 1;
+}
+
+/* ─── Task action buttons ───────────────────────────────── */
+.btn-edit,
+.btn-delete,
+.btn-save,
+.btn-cancel {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-edit {
+  background: #fff;
+  color: #1a1a2e;
+  border-color: #1a1a2e;
+}
+.btn-edit:hover {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+.btn-delete {
+  background: #fff;
+  color: #c0392b;
+  border-color: #c0392b;
+}
+.btn-delete:hover {
+  background: #c0392b;
+  color: #fff;
+}
+
+.btn-save {
+  background: #27ae60;
+  color: #fff;
+  border-color: #27ae60;
+}
+.btn-save:hover {
+  background: #fff;
+  color: #27ae60;
+}
+
+.btn-cancel {
+  background: #fff;
+  color: #888;
+  border-color: #ccc;
+}
+.btn-cancel:hover {
+  background: #eee;
+}
