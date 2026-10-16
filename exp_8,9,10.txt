@@ -28,8 +28,17 @@ python3 wordcount.py
 
 
 ----------------------  HADHOOP ----------------------------------------------------------
+nano wordcount.py
+from collections import Counter
 
+with open("data.txt", "r") as file:
+    words = file.read().split()
 
+count = Counter(words)
+
+for word, frequency in sorted(count.items()):
+    print(word, frequency)
+python3 wordcount.py
 
 
 echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> ~/.bashrc
